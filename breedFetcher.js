@@ -3,21 +3,28 @@ const request = require('request');
 // console.log(request);
 
 
-const search = `https://api.thecatapi.com/v1/breeds/search?q=${args[2]}`;
+//const search = `https://api.thecatapi.com/v1/breeds/search?q=${args[2]}`;
 
 
 
 
-const fetchBreedDescription = function(breedName, callback) {
-  request(search, (error, response, body) => {
+const fetchBreedDescription = function(breedName, callback) { 
+  const url = `https://api.thecatapi.com/v1/breeds/search?q=${breedName}`
+  request(url, (error, response, body) => {
     if (error) {
-      callback(error, null);
-    } else if (body === []) {
-      callback(`We could not find any information about the - ${args[2]} - breed`, null);
+      return callback(error, null); //by returning we avoid it running any further
+    } else if (body.length <= 0) {
+      return callback(`No body return`, null);
     } else {
       const data = JSON.parse(body);
-      let description = data[0].description;
-      callback(null, description);
+      if (!data.length) {
+        return callback(`We could not find any information about the - ${breedName} - breed`, null);
+      } else {
+        //console.log("data --------->", data);
+        let description = data[0].description;
+        return callback(null, description);
+      }
+     
     }
 })
 };
@@ -48,7 +55,9 @@ module.exports = { fetchBreedDescription };
 //     if (body === "[]") {
 //       console.log(`We could not find any information about the - ${args[2]} - breed`);
 //     } else {
+//       console.log("body --------->", body);
 //       const data = JSON.parse(body); //convert to object
+//       console.log("data --------->", data);
 //       let description = data[0].description; //Because we accesing the first (and only in this case) entry of an array.
 //       console.log(description);
 //     }
