@@ -15,4 +15,16 @@ describe('fetchBreedDescription', () => {
       done();
     });
   });
+
+  it('returns an error for invalid cat breed', (done) => {
+    fetchBreedDescription('notACatBreed', (err, desc) => {
+  
+      assert.equal(desc, null);
+
+      done();
+    });
+  });
+
+
+
 });
