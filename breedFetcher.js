@@ -13,7 +13,7 @@ request(search, (error, response, body) => {
     //console.log("Error: the request has failed");
   } else {
     if (body === "[]") {
-      console.log("The breed does not exist")
+      console.log(`We could not find any information about the - ${args[2]} - breed`)
     } else {
     const data = JSON.parse(body); //convert to object
     let description = data[0].description; //Because we accesing the first (and only in this case) entry of an array.
